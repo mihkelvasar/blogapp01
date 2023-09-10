@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+    <meta charset="utf-8"/>
+    <title> New Post </title>
+    
+</head>
+
+<body>
+<form action="/blog/home/creatorview/" enctype="multipart/form-data" method="POST">
+{% csrf_token %}
+{%comment%}
+<script>
+    document.getElementById(ptitle).value = {{postone.post_title}};
+    document.getElementById(pcontent).value = {{postone.post_content}};
+</script>
+{%endcomment%}
+
+{{form.as_p}}
+<input type="submit" value="Post">
+    
+</form>
+
+
+<a href="/blog/home/">
+    <button> Cancel </button>
+</a>
+
+
+
+    
+</body>
+</html>

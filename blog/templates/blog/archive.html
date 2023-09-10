@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8"/>
+    <title> Blog archive</title>
+</head>
+<body>
+    {% if post_list %}
+    <ul>
+        {% for i in post_list %}
+            <li> {{i.updated_at}} | {{i.post_title}} <a href="/blog/{{i.post_id}}/"> See post </a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p> No blog posts found.</p>
+    {% endif %} 
+</body>
+</html>

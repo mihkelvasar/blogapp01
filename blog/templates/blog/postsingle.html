@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8"/>
+    <title> {{postone.post_title}} </title>
+</head>
+<body>
+    <p><h2> {{postone.post_title}}</h2></p>
+    <p><h3>  Posted at:  {{postone.created_at}} </h3></p>
+    <p><h3>  Last updated at: {{postone.updated_at}}</h3></p> 
+
+    <p> {{postone.post_content|linebreaks}} </p>
+
+    
+    <a href="/blog/{{postone.post_id}}/editview/">
+         <button>Edit Post</button>
+
+    </a>
+    
+    <a href="/blog/{{postone.post_id}}/refuseview/">
+        <button> Delete Post</button>
+    </a> 
+    
+    <a href="/blog/archive/">
+         <button>Back</button>
+    </a>
+    
+
+
+</body>
+</html>
+
+{%comment%}
+Did not work <button onclick="href='blog/{{postone.post_id}}/editview/'"> Edit Post</button> | <button onclick="href='blog/{{postone.post_id}}/thermos/'"> Delete Post</button> 
+Worked       <button onclick="href='blog/{{postone.post_id}}/'"> Back </button>                <button onclick="href='blog/{{postone.post_id}}/'"> Back </button>
+
+Worked <a href="/blog/{{postone.post_id}}/editview/"> Edit Post</a> | <a href="/blog/{{postone.post_id}}/refuseview/"> Delete Post</a> 
+Did not work
+
+{%endcomment%}

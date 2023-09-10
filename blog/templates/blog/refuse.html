@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+    <meta charset="utf-8"/>
+    <title> {{postone.post_title}} </title>
+</head>
+<body>
+    <h3> {{postone.post_title}} posted at  {{postone.created_at }} </h3>
+
+    <p> {{postone.post_content|linebreaks}} </p>
+
+    <form action="/blog/{{postone.post_id}}/refuseview/" method="POST">
+        {% csrf_token %}
+
+    <p> Are you sure you want to delete this post? </p>
+    <input type="submit" value="Yes, delete!"> 
+    </form> 
+    <a href="/blog/{{postone.post_id}}/"> 
+        <button>Back</button> 
+    </a>
+</body>
+</html>
+
+{%comment%}
+This works for some reason bot redirects wrong: <button onclick="href='blog/{{postone.post_id}}/'"> Back </button> source shows blog/10/
+This does not: <button onclick="href='blog/<pk:id>/'"> Back </button>
+!!!!THIS WORKS!!!! -> <a href="/blog/{{postone.post_id}}/"> Back </a> <-!!!!! THERE MUST BE A LEADING SLASH IN href=URL
+!!!!THIS BUTTON CODE WORKS!!!!
+  <a href="/blog/{{postone.post_id}}/"> 
+        <button>Back</button> 
+    </a>
+{%endcomment%}
