@@ -1,0 +1,163 @@
+MyBlog documentation. 
+Notes by file, function, model etc.
+-----------------------------------------------------------------------------------------------------------------
+
+Views.py
+
+def archive(request):
+    # Works, tag_list is not interactive
+    # TO-DO make taglist interactive, redirect to taglist view
+    # TO-DO add pagination
+
+# @login_required
+def adarchive(request):
+    # TO-DO add pagination
+
+def postview(request, pk):
+    # leave for draft management only for authenticated users
+
+def commentview(request, pk):
+    # figure out a way to add current user's username as author to comment if user is logged in.
+    # Test everything
+    # one way would be to assign current user's username after commit=False
+    # Would also need a script that assigns special flare to field in template if name matches current user's name
+    #
+    # PROBLEM: does not rerender the comments page with successfully posted comment
+    # SOLUTION: return redirect("blog:comments", pk=postone.post_id)
+    #
+    # PROBLEM: Needed to pass data from one view to the other (to display comment_count)
+    # NOT A SOLUTION: used request.session to assign required data to the session variable
+    # PROBLEM:  it does not update 'live' comment count in commentview
+    # SOLUTION: added separate database request to update comment_count
+    #
+    # PROBLEM: Comments without e-mail are accepted
+    # SOLUTION: in models, remove blank=True from model.field arguments
+
+    # add link to editview, to editview add link to deleteview - no point, current chain through adarchive is fine
+
+
+
+def editview(request, pk):
+    # PROBLEM: returns to root/blog/16/editview/blog/postsingle.html
+    # SOLUTION: return redirect('blog:postview', pk=post.post_id)
+
+    # PROBLEM: tag choice NOT SAVED on site, works in admin
+    # SOLUTION: form.instance instead of form.save(commit=false)
+
+def publish_post(request, pk):
+    # PROBLEM: Verbatim code from JobBoard does not work
+    # SOLUTION: Make sure that action buttons are form actions, not just hyperlinks
+        
+    # PROBLEM: When publish/unpublish is updated, the post goes to the top of the pile.
+    # SOLUTION: change ordering in archive/adarchive
+
+#OK, MyBlog complex expansion
+#
+
+
+# TO-DO LIST
+
+
+
+#5. create photo album code
+#A. figure out html and css for the page to look nice.
+#B. export blogpost as pdf
+#7A. complex tag filtering - subfiltering
+#9. style.css, header, footer
+#10. pagination. 10 for archive, 5 for drafts.
+# 14. UAC for single user. 
+# 15. full tag management - hyperlinks - DONE, sorting posts, results page
+
+# 17. comment duplicates should fail validation
+# 18. comment management page for moderation 
+# 19. redirect admin: viewsite
+# 20. for logged in users, add link to admin panel
+# 21. limit width (line length) of blog posts and comments to 80 characters
+# 22. limit post author field size to one line
+# 23. if user is.authenticated username == "Author" (do i realize it in views or template?)
+# 24. p23. special styling and color for p23.
+
+# DONE LIST
+# Draft system: 
+# 1. option to save as a draft
+# 2. option to see a list of drafts
+
+# UAC for a single user: create user for testing
+#1. convert editpost to forms - done
+#2. add comments (anonymous, e-mail required, not shown) - working, models.py done
+#3. add tags for posts - models, forms done, code done, ADMIN DONE
+#4. add login for single user authentication (which is not superuser) - LOGIN DONE, WORKS
+#6. added publish and unpublish - untested
+#7. simple tag filtering. views, urls, html - NOT WORKING
+#8. NO NEED, SORT OF - co-opt postsingle.html for both drafts and published posts, and editing when logged in - NO NEED
+#11. NO NEED - display first 200 characters of a post content, if there are comments, link that counts the number - NO NEED
+#12. migrations made
+#13. server runs - working out the kinks.
+# 16. custom form labels for Commentform
+# 20. fix Author's view of blog archive
+
+# post edit works, including tag edit.
+# post create works
+# post delete works
+# DONE: why have a postsingle view for anons at all? it might as well be commentview
+# logout works
+# added nonetag
+# post publishing and unpublishing works
+# post-single view should only be for logged in user, the poster
+
+def taglist(request, tag_id):
+    # create a taglist page that displays posts by tag - DONE
+
+def creatorview(request):
+    # add code for adding a tag - done by PostForm? - DONE
+
+    # PROBLEM: tag selection not included in POST
+    # SOLUTION: form.instance.save() was wrong, form.save() was correct
+
+    # PROBLEM: no option to save as draft
+    # SOLUTION: edit PostForm fields to add the required field to form?
+
+
+# IDEA: add tag equivalent to Nonetag. So I could have posts with no tags
+# If no tag is selected, it defaults to Nonetag
+
+# IDEA: tags in single post views should be hyperlinked to template that shows posts of those tags
+# IDEA: tag list in archive should do the same for "for i in tags"
+
+# IDEA: all texts in templates could be assigned to variables. 
+# ergo: Different language selections load different variable libraries.
+
+---------------------------------------------------------------------------------------------------------------
+
+forms.py
+
+class PostForm(forms.ModelForm):
+    # To extend the application for multiple users, an alteration is required:
+    # medium article "how to pass the user object into form classes"
+    # I only need it for one user
+
+----------------------------------------------------------------------------------------------------------------
+
+admin.py
+
+#"auto_now" and "auto_now_add" can be used in models, for updated_at and created_at but in admin.py they CANNOT be displayed as editable fields, 
+# solution - read_onlyfields - now posts can be edited from both admin as well as web page 10.45
+
+#replacing links <a href="/location"></a> with buttons now works (althouhg inline buttons only work within forms).
+# Was that god damn leading '/' that kept ruining things this also fixed redirects and reloads after a redirect.
+
+------------------------------------------------------------------------------------------------------------------
+
+models.py
+
+class Comment(models.Model):
+    # TO-DO
+    # first argument in textfields is verbose name - added
+    # comment content and email must be filled in - added
+    # tags must be optional
+
+    #figure out comment spam restrictions(username, ip etc,). or just pre-moderation
+
+--------------------------------------------------------------------------------------------------------------------
+
+idea: add another boolean flag to post for deletion preselection

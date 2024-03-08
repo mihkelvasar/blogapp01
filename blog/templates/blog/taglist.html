@@ -1,0 +1,32 @@
+
+{% block title %} Posts by tags {% endblock %}
+
+{% block content0 %}
+<p> Tags available: </p>
+    {% for tag in alltags %}
+    <ul>
+        <li><a href="/blog/taglist/{{tag.tag_id}}/"> {{tag.tag_name}} </a></li>
+    </ul>
+    {% endfor %}
+{% endblock %}
+
+{% block content1 %}
+<p>Following posts with tag {{ onetag }} found:</p>
+{% if taggedposts %}
+<ul>
+    {% for i in taggedposts %}
+        <li> Last updated: {{i.created_at}} | {{i.post_title}} <a href="/blog/{{i.post_id}}/comments"> See post </a></li>
+    {% endfor %}
+</ul>
+{% else %}
+No posts with such tag found
+{% endif %}
+{% endblock %}
+
+{% block content2 %}
+{% endblock %}
+
+{% block content3 %}
+
+
+{% endblock %}

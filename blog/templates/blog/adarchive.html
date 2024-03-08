@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Blog Archive - Author view
+{% endblock %}
+
+{%block content0 %}
+<p><h3>Author dashboard. All posts and drafts.</h3></p>
+    {% if post_list %}
+    <ul>
+        {% for i in post_list %}
+        
+            <li>
+                {% if i.post_draft == True %} 
+                    Last updated: {{i.updated_at}} | {{i.post_title}} <a href="/blog/{{i.post_id}}/"> See Draft </a>
+                {% elif i.post_draft == False %} 
+                    Last updated: {{i.updated_at}} | {{i.post_title}} <a href="/blog/{{i.post_id}}/"> See Post </a> 
+                {% endif %}
+            </li>
+        
+        {% endfor %}
+    </ul>
+
+    {% else %}
+        <p> No blog posts found.</p>
+    {% endif %} 
+    
+    <p> Tags available: </p>
+    {% for tag in tag_list %}
+    <ul>
+        <li>{{tag}}</li>
+    </ul>
+    {% endfor %}
+
+    
+{% endblock %}
+
+{% block content1 %}
+<a href="/blog/creatorview/">
+    <button>New Post</button></a>
+
+<a href="/blog/archive/">
+    <button>All posts</button></a> 
+
+<a href="/blog/logout/">
+    <button> Logout </button></a>
+    
+<a href="/blog/home/">
+    <button> Front </button></a>    
+{% endblock %}

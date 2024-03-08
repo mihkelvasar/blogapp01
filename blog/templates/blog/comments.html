@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+
+{% block title %} {{postone.post_title}} {% endblock %}
+
+{% block content2 %}
+
+<p> Add Comment: </p>
+<form method="POST" novalidate>
+    {% csrf_token %}
+    {{new_comment.as_p}}
+    <input type="submit" value="Add comment">        
+</form>
+
+{{message}}
+{% endblock %}
+
+<hr>
+
+{% block content1 %}
+{% if comments %}
+<p> There are {{comment_count}} replies:</p>
+<ul>
+    {% for i in comments %}
+    <li>
+        {% if i.is_active == True %}
+            <p> {{i.author}} Replied on {{i.comment_date}}:</p>
+            <p> {{i.com_content | linebreaks}} </p>
+            {% if user.is_authenticated %} 
+                <p> {{ i.author }}'s email: {{i.author_mail}}</p>
+                <a href="/blog/{{i.comment_id}}/remove/">
+                    <button> Remove comment</button></a>
+            {% endif %}
+        {% else %}
+            <p> This comment has been removed. </p>
+        {% endif %}  
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No Comments to display</p>
+{% endif %}
+
+
+{% endblock %}
+
+{% block content0 %}
+<p><h3> {{postone.post_title }}</h3></p>
+
+<p> {{postone.post_content|linebreaks}} </p>
+
+<p><h5>  Last updated at: {{postone.updated_at}}</h5></p> 
+
+{% endblock %}
+
+{% block content3 %}
+
+<p><h4> Tags: </h4></p>
+{% if tags %}
+    {% for tag in tags %}
+    <ul>
+    <li><a href="/blog/taglist/{{tag.tag_id}}/"> {{tag.tag_name}} </a></li>
+    </ul>
+    {% endfor %}
+{% else %}
+    <p>No tags to display</p>
+{% endif %}
+
+<p><a href="/blog/archive/">
+    <button>Back</button>
+</a></p>
+
+{% endblock %}

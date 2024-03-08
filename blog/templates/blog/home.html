@@ -1,24 +1,26 @@
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-    <meta charset="utf-8"/>
-    <title> Blog homepage</title>
-</head>
-<body>
-    {% if post_list %}
-    <ul>
-        {% for i in post_list %}
-            <li> {{i.updated_at}} |{{i.post_title}} <a href="/blog/{{i.post_id}}/"> See post </a></li>
-        {% endfor %}
-    </ul>
-    {% else %}
-        <p> No blog posts found.</p>
-    {% endif %} 
+{% extends 'base.html' %}
 
-    <p> <a href="/blog/archive/">See full post archive</a> </p>
-    
-    <a href="/blog/home/creatorview/">
-        <button>New Post</button>
-    </a>
-</body>
-</html>
+{% block title %} MyBlog - Home {% endblock %}
+
+{% block content0 %}
+<p>Menu</p>
+{% if user.is_authenticated %}
+<p><a href="{% url 'blog:adarchive' %}">Blog Archive</a></p>
+<p><a href="{% url 'blog:galleries' %}">Gallery Archive</a></p>
+<p><a href="{% url 'blog:about' %}">About Me</a></p>
+<p><a href="{% url 'blog:logout' %}">Logout</a></p>
+{% else %}
+<p><a href="{% url 'blog:archive' %}">Blog Archive</a></p>
+<p><a href="{% url 'blog:galleries' %}">Gallery Archive</a></p>
+<p><a href="{% url 'blog:about' %}">About Me</a></p>
+<p><a href="{% url 'blog:login' %}">Login</a></p>
+{% endif %}
+{% endblock %}
+
+{% block content1 %}
+<p> Front page image here </p>
+{% endblock %}
+
+<p> Header </p>
+
+<p> Footer </p>

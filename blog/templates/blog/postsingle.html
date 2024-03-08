@@ -1,34 +1,78 @@
-<!DOCTYPE html>
-<html lang="en-US">
+{% extends 'base.html' %}
+
 <head>
-    <meta charset="utf-8"/>
+    
     <title> {{postone.post_title}} </title>
+
 </head>
-<body>
+{% block content0 %}
+
+    {% if postone.post_draft == True %}
+    <p> THIS POST IS A DRAFT! </p>
+    {% else %}
+    <p> This post is live </p>
+    {% endif %}
+   
     <p><h2> {{postone.post_title}}</h2></p>
-    <p><h3>  Posted at:  {{postone.created_at}} </h3></p>
-    <p><h3>  Last updated at: {{postone.updated_at}}</h3></p> 
 
     <p> {{postone.post_content|linebreaks}} </p>
 
-    
-    <a href="/blog/{{postone.post_id}}/editview/">
-         <button>Edit Post</button>
+    <p><h3>  Created at:  {{postone.created_at}} </h3></p>
+    <p><h3>  Last updated at: {{postone.updated_at}}</h3></p> 
 
-    </a>
+    <p> Tags </p>
+    {% if tags %}
+        {% for tag in tags %}
+            {{ tag }}
+        {% endfor %}
+    {% else %}
+        <p>No tags to display</p>
+    {% endif %}
+
+    <p> Comments </p>
+    {% if comment_count != 0 %}
+    <p> There are {{comment_count}} comments. <a href="/blog/{{postone.post_id}}/comments"> See comments </a></p>
+
+    {% elif comment_count == 0 %}
+    <p> There are no comments posted yet.</p> 
+    <p> <a href="/blog/{{postone.post_id}}/comments"> Add comment? </a></p>
+    {% endif %}  
+{% endblock %}
+
+{% block content1 %} 
+    {% if user.is_authenticated %}
+    <a href="/blog/{{postone.post_id}}/editview/">
+         <button>Edit Post</button></a>
     
     <a href="/blog/{{postone.post_id}}/refuseview/">
-        <button> Delete Post</button>
-    </a> 
-    
-    <a href="/blog/archive/">
+        <button> Delete Post</button></a> 
+
+        {% if postone.post_draft == True %}
+        <form action="/blog/{{postone.post_id}}/publish/" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Publish post">
+        </form>
+        {% elif postone.post_draft == False %}
+        <form action="/blog/{{postone.post_id}}/unpublish/" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Unpublish post">
+        </form>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+
+{% block content3 %}
+{%if postone.post_draft == True %}
+    <a href="/blog/adarchive/">
          <button>Back</button>
     </a>
-    
-
-
-</body>
-</html>
+{% else %}
+    <a href="/blog/archive/">
+        <button>Back</button>
+    </a>    
+{% endif %}
+{% endblock %}
 
 {%comment%}
 Did not work <button onclick="href='blog/{{postone.post_id}}/editview/'"> Edit Post</button> | <button onclick="href='blog/{{postone.post_id}}/thermos/'"> Delete Post</button> 
@@ -38,3 +82,4 @@ Worked <a href="/blog/{{postone.post_id}}/editview/"> Edit Post</a> | <a href="/
 Did not work
 
 {%endcomment%}
+

@@ -1,48 +1,30 @@
 <!DOCTYPE html>
-{% load static %}
-<html lang="en-US">
+{% extends 'base.html' %}
+
 <head>
-    <meta charset="utf-8"/>
+    
     <title> {{postone.post_title}} </title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/editors.css' %}"/>
+    
 </head>
 
-<body>
-<form action="/blog/{{postone.post_id}}/editview/" method="POST">
-{% csrf_token %}
-{%comment%}
-<script>
-    document.getElementById(ptitle).value = {{postone.post_title}};
-    document.getElementById(pcontent).value = {{postone.post_content}};
-</script>
-{%endcomment%}
-    
-    <label for="ptitle"> Post Title: </label><br>
-    <input type="text" id="ptitle" name="ptitle" maxlength="120" size="120" value="{{postone.post_title}}"><br>
-    
-
-    
-    <label for="pcontent"> Post content: </label><br>
-    <textarea id="pcontent" name="pcontent" maxlength="4500">{{postone.post_content}}</textarea><br>
-    
-    <p><h4> Post last edited: {{postone.updated_at}}</h4></p> 
-
-<input type="submit" value="Change post"> 
+{% block content0 %}
+<h2> Edit Post </h2>
+<form method="POST" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Change Post" />
 </form>
+{% endblock %}
 
-
-<a href="/blog/{{postone.post_id}}/">
-    <button> Back </button>
-</a>
-
-
-
-    
-</body>
-</html>
+{% block content1 %}
+<a href="/blog/archive/">
+    <button>Back</button>
+</a>    
+{% endblock %}
 
 {%comment%}
-2. add "post successfully edited" to the page
+2. add "post successfully edited" to the page - may require the messaging module
 4. add the condition that post title cannot be empty 
 5. deleteview
+6. the "Back" button does not reload/redirect to postview ?do i even need it?
 {%endcomment%}
