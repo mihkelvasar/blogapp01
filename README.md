@@ -8,7 +8,7 @@ with blog posts. But also allow independent access to galleries.
 2. Business home page section, planned to be mostly focusing on those very
 same image galleries.
 
-Current functinality:
+Current functionality:
 1. login/logout for a single user.
 2. blog post drafting/publishing/unpublishing/editing/deleting
 3. Commenting for both logged in and anonymous users
