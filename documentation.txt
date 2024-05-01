@@ -93,7 +93,7 @@ def publish_post(request, pk):
 #11. NO NEED - display first 200 characters of a post content, if there are comments, link that counts the number - NO NEED
 #12. migrations made
 #13. server runs - working out the kinks.
-# 16. custom form labels for Commentform
+# 16. custom form labels for Commentform 
 # 20. fix Author's view of blog archive
 
 # post edit works, including tag edit.
@@ -161,3 +161,10 @@ class Comment(models.Model):
 --------------------------------------------------------------------------------------------------------------------
 
 idea: add another boolean flag to post for deletion preselection
+
+all new fixes and features will first be committed to daydev branch
+which will have the latest code. Once I fix/complete something, I 
+will merge it into main/master. This is to get good with git. But
+also to structure the project into 'complete' and 'incomplete'
+visions. Although at this juncture, this is mostly a trivial
+distinction. 
